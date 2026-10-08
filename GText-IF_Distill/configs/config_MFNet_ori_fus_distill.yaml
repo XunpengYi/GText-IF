@@ -1,0 +1,66 @@
+# General settings
+name: MFNet_train_fus_ori_distill
+seed: 1234
+
+# Dataset parameters
+dataset:
+  train:
+    rgb_path: ../datasets/MFNet_GT_dataset/train/Visible
+    rgb_gt_path: ../datasets/MFNet_GT_dataset/train/Visible
+    x_path: ../datasets/MFNet_GT_dataset/train/Infrared
+    x_gt_path: ../datasets/MFNet_GT_dataset/train/Infrared
+    text_path: ../datasets/MFNet_text/train_text
+    label_path: ../datasets/MFNet_GT_dataset/train/train_label
+    label_transform: False
+    crop_size: [480, 640]
+    train_scale_array:  [0.5, 0.75, 1, 1.25, 1.5, 1.75]
+    cat_max_ratio: 0.75
+    mean_rgb: [0.5, 0.5, 0.5]
+    std_rgb: [0.5, 0.5, 0.5]
+    mean_x: [0.5, 0.5, 0.5]
+    std_x: [0.5, 0.5, 0.5]
+    shuffle: true
+    text_input_mode: saved # Text mode (e.g., 'saved', 'generated', etc.)
+
+  val:
+    rgb_path: ../datasets/MFNet_GT_dataset/test/Visible
+    rgb_gt_path: ../datasets/MFNet_GT_dataset/test/Visible
+    x_path: ../datasets/MFNet_GT_dataset/test/Infrared
+    x_gt_path: ../datasets/MFNet_GT_dataset/test/Infrared
+    text_path: ../datasets/MFNet_text/test_text
+    label_path: ../datasets/MFNet_GT_dataset/test/test_label
+    label_transform: False
+    text_input_mode: saved # Text mode (e.g., 'saved', 'generated', etc.)
+    mean_rgb: [0.5, 0.5, 0.5]
+    std_rgb: [0.5, 0.5, 0.5]
+    mean_x: [0.5, 0.5, 0.5]
+    std_x: [0.5, 0.5, 0.5]
+
+class_names: ['unlabeled', 'car', 'person', 'bike', 'curve', 'car_stop', 'guardrail', 'color_cone', 'bump']
+background_id: 255
+weighted_loss: True
+
+# Model parameters
+model:
+  input_rgb_channels: 3 # Number of channels in the input RGB images
+  num_classes: 9 # Number of output classes
+  backbone: segformer-b2
+
+  text_encoder: long-clip  # Text encoder (e.g., 'clip', 'long-clip', 'blip', etc.)
+  text_encoder_model_path: "./long_clip/checkpoints/longclip-B.pt" # Whether to use a pretrained text encoder
+
+  #pretrained: true # Whether to use a pretrained model
+  #pretrained_path: # Path to the pretrained model
+
+# Training parameters
+train:
+  batch_size: 10 # Batch size
+  num_workers: 16 # Number of workers
+  learning_rate: 0.00006 # Learning rate
+  lr_power: 0.9 # Learning rate power
+  weight_decay: 0.01
+  warm_up_epoch: 10
+  num_epochs: 600 # Number of epochs
+  optimizer: AdamW # Optimizer type
+  val_start_epoch: 1
+  save_step: 20

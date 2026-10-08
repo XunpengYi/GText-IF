@@ -1,0 +1,35 @@
+# General settings
+name: FMB_test_data_fus_ori_distill
+seed: 1234
+
+# Dataset parameters
+dataset:
+  val:
+    rgb_path: ./datasets/test_data/Visible
+    rgb_gt_path: ./datasets/test_data/Visible
+    x_path: ./datasets/test_data/Infrared
+    x_gt_path: ./datasets/test_data/Infrared
+    text_path: None
+    label_path: None
+    label_transform: False
+    text_input_mode: saved # Text mode (e.g., 'saved', 'generated', etc.)
+    mean_rgb: [0.5, 0.5, 0.5]
+    std_rgb: [0.5, 0.5, 0.5]
+    mean_x: [0.5, 0.5, 0.5]
+    std_x: [0.5, 0.5, 0.5]
+
+class_names: ['unlabeled', 'car', 'person', 'bike', 'curve', 'car_stop', 'guardrail', 'color_cone', 'bump']
+background_id: 255
+weighted_loss: True
+
+# Model parameters
+model:
+  input_rgb_channels: 3 # Number of channels in the input RGB images
+  num_classes: 15 # Number of output classes
+  backbone: segformer-b2
+
+  text_encoder: long-clip  # Text encoder (e.g., 'clip', 'long-clip', 'blip', etc.)
+  text_encoder_model_path: "./long_clip/checkpoints/longclip-B.pt" # Whether to use a pretrained text encoder
+
+  #pretrained: true # Whether to use a pretrained model
+  #pretrained_path: # Path to the pretrained model
